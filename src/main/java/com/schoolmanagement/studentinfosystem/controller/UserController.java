@@ -3,10 +3,12 @@ package com.schoolmanagement.studentinfosystem.controller;
 import com.schoolmanagement.studentinfosystem.entity.User;
 import com.schoolmanagement.studentinfosystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
@@ -18,7 +20,6 @@ public class UserController {
     public String home() {
         return "login"; // login.html
     }
-
 
     @GetMapping("/dashboard")
     public String dashboard() {
