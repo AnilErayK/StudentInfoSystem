@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+</head>
+<body class="container">
+<h2 class="mt-5">Giriş Yap</h2>
+<form method="post" action="/login">
+    <div class="form-group">
+        <label>Kullanıcı Adı</label>
+        <input type="text" name="username" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Şifre</label>
+        <input type="password" name="password" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Giriş Yap</button>
+</form>
+</body>
+</html>
