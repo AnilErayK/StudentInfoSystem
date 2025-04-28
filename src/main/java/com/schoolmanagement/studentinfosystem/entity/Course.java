@@ -9,6 +9,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Course {
+
+    private Integer capacity; // Kontenjan kapasitesi
+    private Integer enrolledCount; // Şu anki kayıtlı öğrenci sayısı
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long courseId;
@@ -25,4 +30,7 @@ public class Course {
 
     @Column(nullable = false)
     private int quota; // Kontenjan
+
+
 }
+

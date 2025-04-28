@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Kullanıcı Düzenle</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+
+<h2 class="mb-4">Kullanıcıyı Düzenle</h2>
+
+<form method="post" th:action="@{/admin/users/edit}">
+    <input type="hidden" name="userId" th:value="${user.userId}" />
+
+    <div class="form-group mb-3">
+        <label>Kullanıcı Adı</label>
+        <input type="text" name="username" class="form-control" th:value="${user.username}" required/>
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Şifre</label>
+        <input type="text" name="password" class="form-control" th:value="${user.password}" required/>
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Rol (0: Admin, 1: Öğretmen, 2: Öğrenci)</label>
+        <input type="number" name="role" class="form-control" th:value="${user.role}" required/>
+    </div>
+
+    <button type="submit" class="btn btn-success">Güncelle</button>
+    <a href="/admin/users" class="btn btn-secondary">İptal</a>
+</form>
+
+</body>
+</html>

@@ -6,6 +6,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EnrollmentDTO {
-    private Long studentId;
+    private Long enrollmentId;
     private Long courseId;
+    private Long studentId;
+    private Long teacherId;
+
 }

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Ders Listesi</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+
+<h2 class="mb-4">Tüm Dersler</h2>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Ders ID</th>
+        <th>Ders İsmi</th>
+        <th>Kontenjan</th>
+        <th>Mevcut Kayıtlı Sayısı</th>
+        <th>Öğretmen ID</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="course : ${courses}">
+        <td th:text="${course.courseId}"></td>
+        <td th:text="${course.courseName}"></td>
+        <td th:text="${course.capacity}"></td>
+        <td th:text="${course.enrolledCount}"></td>
+        <td th:text="${course.teacherId}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="/dashboard" class="btn btn-secondary">Geri Dön</a>
+
+</body>
+</html>
