@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Benim Derslerim</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+
+<h2 class="mb-4">Aldığım Dersler</h2>
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <th>Ders İsmi</th>
+        <th>Öğretmen</th>
+        <th>İşlem</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="enrollment : ${enrollments}">
+        <td th:text="${enrollment.course.courseName}"></td>
+        <td th:text="${enrollment.teacher.username}"></td>
+        <td>
+            <form th:action="@{/student/my-courses/drop}" method="post">
+                <input type="hidden" name="enrollmentId" th:value="${enrollment.enrollmentId}" />
+                <button type="submit" class="btn btn-danger btn-sm">Dersi Bırak</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="/student/courses" class="btn btn-primary">Ders Seç</a>
+<a href="/dashboard" class="btn btn-secondary">Geri Dön</a>
+
+</body>
+</html>

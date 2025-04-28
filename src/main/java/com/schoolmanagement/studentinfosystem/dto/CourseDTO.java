@@ -6,6 +6,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CourseDTO {
+    private Long courseId;
     private String courseName;
-    private int quota;
+    private Integer capacity;
+    private Integer enrolledCount;
+    private Long teacherId;
 }

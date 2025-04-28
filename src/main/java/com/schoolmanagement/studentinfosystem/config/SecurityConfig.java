@@ -18,6 +18,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // CSRF korumasını kapattık
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/admin/**").hasAuthority("ROLE_0") // Admin sadece role = 0
+                        .requestMatchers("/teacher/**").hasAuthority("ROLE_1") // Öğretmen sadece role = 1
+                        .requestMatchers("/student/**").hasAuthority("ROLE_2") // Öğrenci sadece role = 2
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
