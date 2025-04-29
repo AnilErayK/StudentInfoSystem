@@ -8,7 +8,6 @@
 </head>
 <body class="container">
 <div th:replace="fragments/navbar :: body"></div>
-
 <h2 class="mb-4">Yeni Ders Ekle</h2>
 
 <form method="post" th:action="@{/admin/courses/add}">
@@ -22,7 +21,7 @@
         <input type="number" name="capacity" class="form-control" required/>
     </div>
 
-    <div class="form-group mb-3" th:if="${isAdmin}">
+    <div class="form-group mb-3" th:if="${#request.requestURI.contains('/admin')}">
         <label>Öğretmen ID (Admin için gerekli)</label>
         <input type="number" name="teacherId" class="form-control"/>
     </div>

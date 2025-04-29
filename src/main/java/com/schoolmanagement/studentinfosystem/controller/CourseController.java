@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
@@ -45,13 +46,20 @@ public class CourseController {
         courseRepository.save(course);
         return "redirect:/admin/courses";
     }
-
+    //admin için ders silme işlemi
+    @PostMapping("/admin/courses/delete/{id}")
+    public String deleteCourse(@PathVariable Long id) {
+        courseRepository.deleteById(id);
+        return "redirect:/admin/courses";
+    }
     // Öğretmen için ders ekleme formu
     @GetMapping("/teacher/courses/add")
     public String showAddCourseFormForTeacher(Model model) {
         model.addAttribute("course", new CourseDTO());
         return "teacher/add_course";
     }
+
+
 
     // Öğretmen için ders ekleme işlemi
     @PostMapping("/teacher/courses/add")
