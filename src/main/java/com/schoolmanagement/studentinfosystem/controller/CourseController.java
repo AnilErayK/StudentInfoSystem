@@ -33,6 +33,7 @@ public class CourseController {
     // Admin için ders ekleme formu
     @GetMapping("/admin/courses/add")
     public String showAddCourseFormForAdmin(Model model) {
+        model.addAttribute("isAdmin", true); // sadece admin için
         model.addAttribute("course", new CourseDTO());
         return "admin/add_course";
     }

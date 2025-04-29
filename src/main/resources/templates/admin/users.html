@@ -24,10 +24,12 @@
         <td th:text="${user.role}"></td>
         <td>
             <a th:href="@{/admin/users/edit/{id}(id=${user.userId})}" class="btn btn-warning btn-sm">Düzenle</a>
-            <a th:href="@{/admin/users/delete/{id}(id=${user.userId})}" class="btn btn-danger btn-sm"
-               onclick="return confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?')">
-                Sil
-            </a>
+            <form th:action="@{/admin/users/delete/{id}(id=${user.userId})}" method="get" style="display:inline;">
+                <button type="submit" class="btn btn-danger btn-sm"
+                        onclick="return confirm('Bu kullanıcıyı silmek istediğinize emin misiniz?')">
+                    Sil
+                </button>
+            </form>
         </td>
     </tr>
     </tbody>
