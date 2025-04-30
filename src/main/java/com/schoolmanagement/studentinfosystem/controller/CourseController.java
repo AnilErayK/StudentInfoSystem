@@ -52,6 +52,25 @@ public class CourseController {
         courseRepository.deleteById(id);
         return "redirect:/admin/courses";
     }
+
+    //ders listeleme
+    @GetMapping("/teacher/courses")
+    public String listCoursesForTeacher(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+
+        User teacher = userRepository.findByUsername(username).orElse(null);
+
+        if (teacher != null) {
+            List<Course> courses = courseRepository.findByTeacher(teacher); // öğretmenin dersleri
+            model.addAttribute("courses", courses);
+        } else {
+            model.addAttribute("courses", List.of()); // boş liste
+        }
+
+        return "teacher/courses"; // templates/teacher/courses.html
+    }
+
     // Öğretmen için ders ekleme formu
     @GetMapping("/teacher/courses/add")
     public String showAddCourseFormForTeacher(Model model) {
