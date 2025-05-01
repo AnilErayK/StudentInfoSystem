@@ -21,8 +21,9 @@ public class User {
     private String password;
 
     @Lob
-    @Column(name = "profile_photo")
-    private byte[] profilePhoto;
+    @Basic(fetch = FetchType.EAGER)
+    @Column(columnDefinition = "MEDIUMBLOB")
+    private byte[] photo;
 
     @Column(nullable = false)
     private int role; // 0 - Admin, 1 - Öğretmen, 2 - Öğrenci

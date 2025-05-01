@@ -29,7 +29,8 @@
                 <td th:text="${course.enrolledCount}"></td>
                 <td th:text="${course.teacher != null ? course.teacher.username : 'Atanmamış'}"></td>
                 <td>
-                    <form th:action="@{'/admin/courses/delete/' + ${course.courseId}}" method="post" style="display:inline;">
+                    <form th:action="@{/admin/courses/delete/{id}(id=${course.courseId})}"
+                          method="post" style="display:inline;">
                         <button type="submit" class="btn btn-danger btn-sm">Sil</button>
                     </form>
                 </td>

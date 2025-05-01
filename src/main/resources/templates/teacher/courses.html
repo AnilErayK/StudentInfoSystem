@@ -11,26 +11,35 @@
 <div class="container ">
 <h2 class="mb-4 mt-4">Tüm Dersler</h2>
 
-<table class="table table-bordered">
-    <thead>
-    <tr>
-        <th>Ders ID</th>
-        <th>Ders İsmi</th>
-        <th>Kontenjan</th>
-        <th>Mevcut Kayıtlı Sayısı</th>
-        <th>Öğretmen ID</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="course : ${courses}">
-        <td th:text="${course.courseId}"></td>
-        <td th:text="${course.courseName}"></td>
-        <td th:text="${course.capacity}"></td>
-        <td th:text="${course.enrolledCount}"></td>
-        <td th:text="${course.teacherId}"></td>
-    </tr>
-    </tbody>
-</table>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Ders ID</th>
+            <th>Ders Adı</th>
+            <th>Kontenjan</th>
+            <th>Kayıtlı Sayısı</th>
+            <th>İşlem</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="course : ${courses}">
+            <td th:text="${course.courseId}"></td>
+            <td th:text="${course.courseName}"></td>
+            <td th:text="${course.capacity}"></td>
+            <td th:text="${course.enrolledCount}"></td>
+            <td>
+                <!-- Silme formu -->
+                <form th:action="@{/teacher/courses/delete/{id}(id=${course.courseId})}"
+                      method="post" th:object="${course}" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-danger"
+                            onclick="return confirm('Bu dersi silmek istediğinize emin misiniz?');">
+                        Sil
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
 <a href="/dashboard" class="btn btn-secondary">Geri Dön</a>
 </div>

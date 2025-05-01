@@ -11,7 +11,7 @@
     <div class="container">
         <h2 class="mb-4 mt-4">Yeni Kullanıcı Ekle</h2>
 
-        <form method="post" th:action="@{/admin/users/add}">
+        <form method="post" th:action="@{/admin/users/add}" enctype="multipart/form-data" th:object="${user}">
             <div class="form-group mb-3">
                 <label>Kullanıcı Adı</label>
                 <input type="text" name="username" class="form-control" required/>
@@ -26,7 +26,15 @@
                 <label>Rol (0: Admin, 1: Öğretmen, 2: Öğrenci)</label>
                 <input type="number" name="role" class="form-control" required/>
             </div>
+            <div class="mb-3">
+                <label for="photoFile" class="form-label">Fotoğraf</label>
+                <input type="file"
+                       id="photoFile"
+                       th:field="*{photoFile}"
+                       class="form-control"
+                       accept="image/*"/>
 
+            </div>
             <button type="submit" class="btn btn-success">Kaydet</button>
             <a href="/admin/users" class="btn btn-secondary">Geri Dön</a>
         </form>

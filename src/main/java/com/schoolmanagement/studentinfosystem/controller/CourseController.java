@@ -116,5 +116,21 @@ public class CourseController {
         }
         return "redirect:/teacher/courses";
     }
+    @PostMapping("/teacher/courses/delete/{id}")
+    public String deleteCourseByTeacher(@PathVariable Long id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        User teacher = userRepository.findByUsername(username).orElse(null);
 
+        // Önce dersi al
+        Course course = courseRepository.findById(id).orElse(null);
+        if (teacher != null && course != null) {
+            // Sadece dersi açan öğretmense sil
+            if (course.getTeacher().getUserId().equals(teacher.getUserId())) {
+                courseRepository.deleteById(id);
+            }
+        }
+
+        return "redirect:/teacher/courses";
+    }
 }

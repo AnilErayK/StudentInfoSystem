@@ -9,13 +9,12 @@ import com.schoolmanagement.studentinfosystem.mapper.UserMapper;
 import com.schoolmanagement.studentinfosystem.repository.CourseRepository;
 import com.schoolmanagement.studentinfosystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -34,7 +33,16 @@ public class AdminController {
         model.addAttribute("users", userDTOs);
         return "admin/users";
     }
-
+    @GetMapping("/admin/users/photo/{id}")
+    @ResponseBody
+    public ResponseEntity<byte[]> userPhoto(@PathVariable Long id) {
+        return userRepository.findById(id)
+                .map(u -> ResponseEntity
+                        .ok()
+                        .header("Content-Type", "image/jpeg")   // veya image/png
+                        .body(u.getPhoto()))
+                .orElse(ResponseEntity.notFound().build());
+    }
     @GetMapping("/admin/users/add")
     public String showAddUserForm(Model model) {
         model.addAttribute("user", new UserDTO());
@@ -42,8 +50,14 @@ public class AdminController {
     }
 
     @PostMapping("/admin/users/add")
-    public String addUser(UserDTO userDTO) {
-        User user = UserMapper.toEntity(userDTO);
+    public String addUser(@ModelAttribute UserDTO dto) throws IOException {
+        // 1) Fotoğraf seçilmişse
+        if (dto.getPhotoFile() != null && !dto.getPhotoFile().isEmpty()) {
+            dto.setPhoto(dto.getPhotoFile().getBytes());
+        }
+
+        // 2) DTO → Entity
+        User user = UserMapper.toEntity(dto);
         userRepository.save(user);
         return "redirect:/admin/users";
     }
