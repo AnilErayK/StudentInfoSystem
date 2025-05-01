@@ -28,10 +28,16 @@
         <td th:text="${course.capacity}"></td>
         <td th:text="${course.enrolledCount}"></td>
         <td>
-            <form th:action="@{/student/courses/enroll}" method="post">
+            <!-- Eğer kayıtlı ise butonu devre dışı bırak veya başka bir yazı göster -->
+            <form th:action="@{/student/courses/enroll}" method="post"
+                  th:if="${!enrolledIds.contains(course.courseId)}">
                 <input type="hidden" name="courseId" th:value="${course.courseId}" />
                 <button type="submit" class="btn btn-primary btn-sm">Kaydol</button>
             </form>
+            <button class="btn btn-secondary btn-sm" disabled
+                    th:if="${enrolledIds.contains(course.courseId)}">
+                Kayıtlı
+            </button>
         </td>
     </tr>
     </tbody>

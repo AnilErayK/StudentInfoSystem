@@ -29,17 +29,36 @@ public class StudentController {
 
     @GetMapping("/student/courses")
     public String listAvailableCourses(Model model) {
+        // 1) Boş kontenjanlı dersleri al
         List<Course> availableCourses = courseRepository.findAll()
                 .stream()
-                .filter(course -> course.getEnrolledCount() < course.getCapacity()) // Boş kontenjanı olanlar
+                .filter(c -> c.getEnrolledCount() < c.getCapacity())
                 .toList();
 
+        // 2) DTO’ya çevir
         List<CourseDTO> availableCourseDTOs = availableCourses.stream()
                 .map(CourseMapper::toDTO)
                 .toList();
 
+        // 3) Öğrencinin mevcut kayıtlı derslerinin ID’lerini al
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        User student = userRepository.findByUsername(username).orElse(null);
+
+        List<Long> enrolledIds = List.of();
+        if (student != null) {
+            enrolledIds = enrollmentRepository
+                    .findByStudent(student)
+                    .stream()
+                    .map(enr -> enr.getCourse().getCourseId())
+                    .toList();
+        }
+
+        // 4) Model’e ekle
         model.addAttribute("courses", availableCourseDTOs);
-        return "student/courses"; // templates/student/courses.html
+        model.addAttribute("enrolledIds", enrolledIds);
+
+        return "student/courses";
     }
 
     @PostMapping("/student/courses/enroll")
