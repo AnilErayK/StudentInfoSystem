@@ -42,10 +42,27 @@ public class CourseController {
     // Admin için ders ekleme işlemi
     @PostMapping("/admin/courses/add")
     public String addCourseByAdmin(CourseDTO courseDTO) {
-        Course course = CourseMapper.toEntity(courseDTO);
-        courseRepository.save(course);
-        return "redirect:/admin/courses";
+        // teacherId'yi al
+        Long teacherId = courseDTO.getTeacherId();
+        System.out.println("Teacher ID: " + teacherId);  // Debug mesajı: teacherId'yi kontrol et
+
+        // Öğretmeni ID'ye göre bul
+        User teacher = userRepository.findById(teacherId).orElse(null);
+
+        // Eğer öğretmen bulunursa, kursu oluştur
+        if (teacher != null) {
+            Course course = CourseMapper.toEntity(courseDTO);
+            course.setTeacher(teacher); // Öğretmeni ata
+            course.setEnrolledCount(0); // Yeni ders açıldığı için kayıtlı öğrenci 0
+            courseRepository.save(course); // Kursu kaydet
+        } else {
+            System.out.println("Teacher not found!");  // Debug mesajı: Öğretmen bulunamadı
+        }
+
+        return "redirect:/admin/courses"; // Başarıyla kaydetme sonrası yönlendirme
     }
+
+
     //admin için ders silme işlemi
     @PostMapping("/admin/courses/delete/{id}")
     public String deleteCourse(@PathVariable Long id) {
@@ -58,17 +75,19 @@ public class CourseController {
     public String listCoursesForTeacher(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-
         User teacher = userRepository.findByUsername(username).orElse(null);
 
         if (teacher != null) {
-            List<Course> courses = courseRepository.findByTeacher(teacher); // öğretmenin dersleri
-            model.addAttribute("courses", courses);
+            List<Course> courses = courseRepository.findByTeacherWithTeacherJoin(teacher);
+            List<CourseDTO> courseDTOs = courses.stream()
+                    .map(CourseMapper::toDTO)
+                    .toList();
+            model.addAttribute("courses", courseDTOs);
         } else {
-            model.addAttribute("courses", List.of()); // boş liste
+            model.addAttribute("courses", List.of());
         }
 
-        return "teacher/courses"; // templates/teacher/courses.html
+        return "teacher/courses";
     }
 
     // Öğretmen için ders ekleme formu
@@ -85,17 +104,16 @@ public class CourseController {
     public String addCourseByTeacher(CourseDTO courseDTO) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-
         // Öğretmenin User nesnesini bul
         User teacher = userRepository.findByUsername(username).orElse(null);
-
         if (teacher != null) {
             Course course = CourseMapper.toEntity(courseDTO);
             course.setTeacher(teacher); // Dersi ekleyen öğretmeni setle
             course.setEnrolledCount(0); // Yeni ders açıldığı için kayıtlı öğrenci 0
             courseRepository.save(course);
+        }else{
+            System.out.println("Öğretmen tarafından ders kaydı yapılamadı !");
         }
-
         return "redirect:/teacher/courses";
     }
 

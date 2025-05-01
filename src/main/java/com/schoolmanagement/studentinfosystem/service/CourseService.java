@@ -15,7 +15,7 @@ public class CourseService {
     private final CourseRepository courseRepository;
 
     public List<Course> getCoursesByTeacher(User teacher) {
-        return courseRepository.findByTeacher(teacher);
+        return courseRepository.findByTeacherWithTeacherJoin(teacher);
     }
 
     public Course save(Course course) {

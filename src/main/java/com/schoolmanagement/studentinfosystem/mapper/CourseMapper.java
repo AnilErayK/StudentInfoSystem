@@ -2,6 +2,7 @@ package com.schoolmanagement.studentinfosystem.mapper;
 
 import com.schoolmanagement.studentinfosystem.dto.CourseDTO;
 import com.schoolmanagement.studentinfosystem.entity.Course;
+import com.schoolmanagement.studentinfosystem.entity.User;
 
 public class CourseMapper {
 
