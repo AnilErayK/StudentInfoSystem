@@ -13,38 +13,38 @@
 
         <!-- ADMIN (ROLE_0) -->
         <li class="nav-item" sec:authorize="hasAuthority('ROLE_0')">
-          <a class="nav-link" href="/admin/users">Manage Users</a>
+          <a class="nav-link" href="/admin/users">Kullanıcılar</a>
         </li>
         <li class="nav-item" sec:authorize="hasAuthority('ROLE_0')">
-          <a class="nav-link" href="/admin/users/add">Add User</a>
+          <a class="nav-link" href="/admin/users/add">Kullanıcı Ekle</a>
         </li>
         <li class="nav-item" sec:authorize="hasAuthority('ROLE_0')">
-          <a class="nav-link" href="/admin/courses">Manage Courses</a>
+          <a class="nav-link" href="/admin/courses">Dersler</a>
         </li>
         <li class="nav-item" sec:authorize="hasAuthority('ROLE_0')">
-          <a class="nav-link" href="/admin/courses/add">Add Course</a>
+          <a class="nav-link" href="/admin/courses/add">Ders Ekle</a>
         </li>
 
         <!-- TEACHER (ROLE_1) -->
         <li class="nav-item" sec:authorize="hasAuthority('ROLE_1')">
-          <a class="nav-link" href="/teacher/courses">My Courses</a>
+          <a class="nav-link" href="/teacher/courses">Derslerim</a>
         </li>
         <li class="nav-item" sec:authorize="hasAuthority('ROLE_1')">
-          <a class="nav-link" href="/teacher/courses/add">Add Course</a>
+          <a class="nav-link" href="/teacher/courses/add">Ders Ekle</a>
         </li>
 
         <!-- STUDENT (ROLE_2) -->
         <li class="nav-item" sec:authorize="hasAuthority('ROLE_2')">
-          <a class="nav-link" href="/student/courses">Available Courses</a>
+          <a class="nav-link" href="/student/courses">Alınabilecek Dersler</a>
         </li>
         <li class="nav-item" sec:authorize="hasAuthority('ROLE_2')">
-          <a class="nav-link" href="/student/my-courses">My Courses</a>
+          <a class="nav-link" href="/student/my-courses">Derslerim</a>
         </li>
 
         <!-- LOGOUT -->
         <li class="nav-item">
           <form action="/logout" method="post" style="display:inline;">
-            <button type="submit" class="btn btn-danger btn-sm ms-3">Logout</button>
+            <button type="submit" class="btn btn-danger btn-sm ms-3">Çıkış Yap</button>
           </form>
         </li>
       </ul>
