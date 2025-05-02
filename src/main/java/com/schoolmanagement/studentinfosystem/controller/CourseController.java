@@ -12,8 +12,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -41,25 +43,31 @@ public class CourseController {
 
     // Admin için ders ekleme işlemi
     @PostMapping("/admin/courses/add")
-    public String addCourseByAdmin(CourseDTO courseDTO) {
-        // teacherId'yi al
+    public String addCourseByAdmin(@ModelAttribute CourseDTO courseDTO,
+                                   RedirectAttributes redirect) {
+
         Long teacherId = courseDTO.getTeacherId();
-        System.out.println("Teacher ID: " + teacherId);  // Debug mesajı: teacherId'yi kontrol et
-
-        // Öğretmeni ID'ye göre bul
-        User teacher = userRepository.findById(teacherId).orElse(null);
-
-        // Eğer öğretmen bulunursa, kursu oluştur
-        if (teacher != null) {
-            Course course = CourseMapper.toEntity(courseDTO);
-            course.setTeacher(teacher); // Öğretmeni ata
-            course.setEnrolledCount(0); // Yeni ders açıldığı için kayıtlı öğrenci 0
-            courseRepository.save(course); // Kursu kaydet
-        } else {
-            System.out.println("Teacher not found!");  // Debug mesajı: Öğretmen bulunamadı
+        if (teacherId == null) {
+            redirect.addFlashAttribute("error", "Öğretmen ID zorunludur");
+            return "redirect:/admin/courses/add";
         }
 
-        return "redirect:/admin/courses"; // Başarıyla kaydetme sonrası yönlendirme
+        User teacher = userRepository.findById(teacherId).orElse(null);
+
+        // 🔴 Rol kontrolü EKLENİYOR
+        if (teacher == null || teacher.getRole() != 1) {
+            redirect.addFlashAttribute("error",
+                    "Girilen ID öğretmene (ROLE_1) ait değil!");
+            return "redirect:/admin/courses/add";
+        }
+
+        Course course = CourseMapper.toEntity(courseDTO);
+        course.setTeacher(teacher);
+        course.setEnrolledCount(0);
+        courseRepository.save(course);
+
+        return "redirect:/admin/courses";
+
     }
 
 
