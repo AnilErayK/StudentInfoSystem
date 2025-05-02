@@ -35,7 +35,11 @@
                 <td th:text="${user.userId}"></td>
                 <td th:text="${user.username}"></td>
                 <td th:text="${user.role}"></td>
-
+                <td>
+                    <a th:href="@{/admin/users/edit/{id}(id=${user.userId})}" class="btn btn-primary btn-sm">Düzenle</a>
+                    <a th:href="@{/admin/users/delete/{id}(id=${user.userId})}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Bu kullanıcıyı silmek istediğinizden emin misiniz?');">Sil</a>
+                </td>
             </tr>
             </tbody>
         </table>

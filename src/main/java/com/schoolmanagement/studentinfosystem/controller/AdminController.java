@@ -80,8 +80,22 @@ public class AdminController {
     }
 
     @PostMapping("/admin/users/edit")
-    public String updateUser(User user) {
-        userRepository.save(user); // User nesnesini kaydet (ID varsa update yapar)
+    public String updateUser(@ModelAttribute UserDTO dto) throws IOException {
+        User user = userRepository.findById(dto.getUserId()).orElse(null);
+
+        if (user == null) {
+            return "redirect:/admin/users";
+        }
+
+        user.setUsername(dto.getUsername());
+        user.setRole(dto.getRole());
+
+        if (dto.getPhotoFile() != null && !dto.getPhotoFile().isEmpty()) {
+            user.setPhoto(dto.getPhotoFile().getBytes());
+        }
+        // Aksi halde eski fotoğrafı olduğu gibi bırakıyoruz
+
+        userRepository.save(user);
         return "redirect:/admin/users";
     }
 
