@@ -25,14 +25,25 @@ public class AdminController {
     private final CourseRepository courseRepository;
 
     @GetMapping("/admin/users")
-    public String listUsers(Model model) {
-        List<User> users = userRepository.findAll();
+    public String listUsers(Model model, @RequestParam(value = "keyword", required = false) String keyword) {
+
+        List<User> users;
+        if (keyword != null && !keyword.isEmpty()) {
+            users = userRepository.findByUsernameContainingIgnoreCase(keyword);
+        } else {
+            users = userRepository.findAll();
+        }
+
+        // User nesnelerini UserDTO nesnelerine dönüştür
         List<UserDTO> userDTOs = users.stream()
-                .map(UserMapper::toDTO)
+                .map(UserMapper::toDTO)  // User -> UserDTO dönüşümü
                 .toList();
+
         model.addAttribute("users", userDTOs);
+        model.addAttribute("keyword", keyword);
         return "admin/users";
     }
+
     @GetMapping("/admin/users/photo/{id}")
     @ResponseBody
     public ResponseEntity<byte[]> userPhoto(@PathVariable Long id) {
